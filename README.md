@@ -8,6 +8,10 @@ Trying to add the best practice and best tools.
 Working on node 8.9.3 and npm 5.5.1.
 
 To start using the project you have to install node and npm.
+
+Install dependencies :
+npm install
+
 Compile the project :
 npm run build
 
