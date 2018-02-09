@@ -1,19 +1,31 @@
 {
-  "name": "simple_project_calendar",
+  "name": "simple_app_express_react_redux",
   "version": "1.0.0",
   "description": "server from scratch, redux and react",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/edd83/simple_app_express_react_redux.git"
-  }
+  },
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "compression": "^1.7.1",
     "express": "^4.16.2",
     "formidable": "^1.1.1",
+    "http": "0.0.0",
+    "http-proxy": "^1.16.2",
+    "path": "^0.12.7",
+    "pretty-error": "^2.1.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "react-router": "^4.2.0",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.7.2",
+    "redux-async-connect": "^1.0.0-rc4",
+    "scroll-behavior": "^0.9.5",
+    "serve-favicon": "^2.4.5",
+    "socket.io-client": "^2.0.4"
   },
   "devDependencies": {
     "babel": "^6.23.0",
