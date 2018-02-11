@@ -1,6 +1,6 @@
 # Complete app React Redux Express LoadBalancing Traduction Vhosts
 
-Version 1.0.0
+Version 1.2.0
 
 ---------------------
 
