@@ -1,0 +1,45 @@
+#!/bin/bash
+
+printf "\e[1;34m\nType a name for your component in camel case (ex: groupInfoSpecial), followed by [enter] :%-6s\e[m\n"
+
+read name
+
+printf "\e[1;34m\nBEGIN SCRIPT ADD COMPONENT WITH DATA%-6s\e[m\n"
+
+extensionjs=".js"
+extensionscss=".scss"
+load="load"
+modified=$(tr '[:lower:]' '[:upper:]' <<< ${name:0:1})${name:1}
+echo "$name $modified"
+printf "\nReplacing the characters...\n"
+
+sed -i "s/BleuBleu/$name/g" BleuBleu/BleuBleu.js
+sed -i "s/BleuBleu/$modified/g" BleuBleu/BleuBleu.js
+printf "\n \t Replaced BleuBleu/BleuBleu.js\n"
+
+printf "\nCopying the files...\n"
+mkdir $modified
+cp BleuBleu/BleuBleu.js $modified/$modified$extensionjs
+printf "\n \t BleuBleu/BleuBleu.js copied \n"
+cp BleuBleu/BleuBleu.scss $modified/$modified$extensionscss
+printf "\n \t BleuBleu/BleuBleu.scss copied \n"
+
+printf "\nMoving the files to the right place...\n"
+mv $modified ../src/components/
+printf "\n \t $modified moved \n"
+
+printf "\nGetting the file to the original...\n"
+
+sed -i "s/$name/BleuBleu/g" BleuBleu/BleuBleu.js
+sed -i "s/$modified/BleuBleu/g" BleuBleu/BleuBleu.js
+printf "\n \t BleuBleu/BleuBleu.js is now originalised \n"
+
+printf "\nAdding lines in different files...\n"
+
+awk 'NR==25{print "export '$modified' from '\''./'$modified'/'$modified''\'';"}7' ../src/components/index.js >> ../src/components/replace.js
+mv ../src/components/replace.js ../src/components/index.js
+printf "\n \t Added a line in src/components/index.js \n"
+
+printf "\x1b[31m\n\n[IMPORTANT] You have to enter manually your component into your view component! [IMPORTANT]\x1b[0m\n\n"
+
+printf "\e[1;34m\nEND SCRIPT%-6s\e[m\n"

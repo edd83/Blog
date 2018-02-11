@@ -1,0 +1,80 @@
+#!/bin/bash
+
+printf "\e[1;34m\nType a name for your component in camel case (ex: groupInfoSpecial), followed by [enter] :%-6s\e[m\n"
+
+read name
+
+printf "\e[1;34m\nBEGIN SCRIPT ADD COMPONENT WITH DATA%-6s\e[m\n"
+
+extensionjs=".js"
+extensionscss=".scss"
+load="load"
+modified=$(tr '[:lower:]' '[:upper:]' <<< ${name:0:1})${name:1}
+
+printf "\nReplacing the characters...\n"
+
+sed -i "s/testTest/$name/g" testTest.js
+sed -i "s/TestTest/$modified/g" testTest.js
+printf "\n \t Replaced testTest.js\n"
+
+sed -i "s/testTest/$name/g" loadTestTest.js
+sed -i "s/TestTest/$modified/g" loadTestTest.js
+printf "\n \t Replaced loadTestTest.js\n"
+
+sed -i "s/testTest/$name/g" TestTest/TestTest.js
+sed -i "s/TestTest/$modified/g" TestTest/TestTest.js
+printf "\n \t Replaced TestTest/TestTest.js\n"
+
+printf "\nCopying the files...\n"
+mkdir $modified
+cp TestTest/TestTest.js $modified/$modified$extensionjs
+printf "\n \t TestTest/TestTest.js copied \n"
+cp TestTest/TestTest.scss $modified/$modified$extensionscss
+printf "\n \t TestTest/TestTest.scss copied \n"
+cp loadTestTest.js $load$modified$extensionjs
+printf "\n \t loadTestTest.js copied \n"
+cp testTest.js $name$extensionjs
+printf "\n \t testTest.js copied \n"
+
+printf "\nMoving the files to the right place...\n"
+mv $modified ../src/components/
+printf "\n \t $modified moved \n"
+mv $load$modified$extensionjs ../api/actions/
+printf "\n \t $load$modified$extensionjs moved \n"
+mv $name$extensionjs ../src/redux/modules/
+printf "\n \t $name$extensionjs moved \n"
+
+printf "\nGetting the file to the original...\n"
+sed -i "s/$name/testTest/g" testTest.js
+sed -i "s/$modified/TestTest/g" testTest.js
+printf "\n \t testTest.js is now originalised \n"
+
+sed -i "s/$name/testTest/g" loadTestTest.js
+sed -i "s/$modified/TestTest/g" loadTestTest.js
+printf "\n \t loadTestTest.js is now originalised \n"
+
+sed -i "s/$name/testTest/g" TestTest/TestTest.js
+sed -i "s/$modified/TestTest/g" TestTest/TestTest.js
+printf "\n \t TestTest/TestTest.js is now originalised \n"
+
+printf "\nAdding lines in different files...\n"
+
+awk 'NR==1{print "export '$load$modified' from '\''./'$load$modified''\'';"}7' ../api/actions/index.js >> ../api/actions/replace.js
+mv ../api/actions/replace.js ../api/actions/index.js
+printf "\n \t Added a line in api/actions/index.js \n"
+
+awk 'NR==25{print "export '$modified' from '\''./'$modified'/'$modified''\'';"}7' ../src/components/index.js >> ../src/components/replace.js
+mv ../src/components/replace.js ../src/components/index.js
+printf "\n \t Added a line in src/components/index.js \n"
+
+awk 'NR==38{print "\t'$name,'"}7' ../src/redux/modules/reducer.js >> ../src/redux/modules/replace.js
+mv ../src/redux/modules/replace.js ../src/redux/modules/reducer.js
+printf "\n \t Added a line in src/redux/modules/reducer.js \n"
+
+awk 'NR==20{print "import '$name' from '\''./'$name''\'';"}7' ../src/redux/modules/reducer.js >> ../src/redux/modules/replace.js
+mv ../src/redux/modules/replace.js ../src/redux/modules/reducer.js
+printf "\n \t Added a line in src/redux/modules/reducer.js \n"
+
+printf "\x1b[31m\n\n[IMPORTANT] You have to enter manually your component into your view component! [IMPORTANT]\x1b[0m\n\n"
+
+printf "\e[1;34m\nEND SCRIPT%-6s\e[m\n"

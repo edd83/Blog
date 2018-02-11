@@ -1,7 +1,6 @@
 import Express from 'express';
 import React from 'react';
 import ReactDOM from 'react-dom/server';
-import {Provider} from 'react-redux';
 import config from './config';
 import favicon from 'serve-favicon';
 import compression from 'compression';
@@ -12,30 +11,28 @@ import ApiClient from './helpers/ApiClient';
 import Html from './helpers/Html';
 import PrettyError from 'pretty-error';
 import http from 'http';
+
+import {match} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {ReduxAsyncConnect, loadOnServer} from 'redux-async-connect';
 import createHistory from 'react-router/lib/createMemoryHistory';
+import {Provider} from 'react-redux';
 import getRoutes from './routes';
-import {match} from 'react-router';
+import i18n from './i18n-server';
+import i18nMiddleware from 'i18next-express-middleware';
+import { I18nextProvider } from 'react-i18next';
 
 let vhost = require('vhost');
-
+let fs = require('fs');
 const targetUrl = 'http://' + config.apiHost + ':' + config.apiPort;
 const pretty = new PrettyError();
 const app = new Express();
 const server = new http.Server(app);
+const cors = require('cors');
 const proxy = httpProxy.createProxyServer({target: targetUrl, ws: true});
 
-console.log('LOG PART');
-console.log('-------------------------');
-console.log('--------targetUrl--------');
-console.log(targetUrl);
-console.log('--------path--------');
-console.log(path);
-console.log('-------------------------');
-
 app.use(compression());
-app.use(favicon(path.join(__dirname, '..', 'static', 'project.ico')));
+app.use(favicon(path.join(__dirname, '..', 'static', 'test.ico')));
 
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 app.use(i18nMiddleware.handle(i18n))
@@ -72,42 +69,53 @@ proxy.on('error', (error, req, res) => {
   res.end(JSON.stringify(json));
 });
 
-// Get all Vhosts
 var virtualHosts = require('./vhosts.json');
-// Loop on each vhosts
 virtualHosts.forEach(function(virtualHost) {
   const app2 = new Express();
-  // Get path variable in the vhost file
-  app2.get('/subDomain', (req, res) => {
-    res.json({subDomain: virtualHost.path})
+//  app2.use(compression());
+// // app2.use(favicon(path.join(__dirname, virtualHost.path, '..', 'static', 'nestenn.ico')));
+//  app2.use(Express.static(path.join(__dirname, virtualHost.path, '..', 'static')));
+//
+//  app2.use(Express.static(path.join(__dirname, virtualHost.path)));
+  app2.get('/siteUrl', (req, res) => {
+    res.json({siteUrl: virtualHost.path})
   });
   app2.use((req, res) => {
+    // app.use(cors({origin: virtualHost.path}));
     if (__DEVELOPMENT__) {
       // Do not cache webpack stats: the script file would change since
       // hot module replacement is enabled in the development env
       webpackIsomorphicTools.refresh();
     }
+
     const client = new ApiClient(req);
     const memoryHistory = createHistory(req.originalUrl);
     const store = createStore(memoryHistory, client);
     const history = syncHistoryWithStore(memoryHistory, store);
-    store.subDomain = virtualHost.path;
+    store.siteUrl = virtualHost.path;
+    let locale;
+    if (req.originalUrl.includes('/en/')) {
+      locale = 'en';
+    } else {
+      locale = 'fr';
+    }
+    store.locale = locale;
+    const resources2 = i18n.getResourceBundle('en', 'common');
+    const resources = i18n.getResourceBundle('fr', 'common');
+    const i18nClient = {locale, resources, resources2};
+    const i18nServer = i18n.cloneInstance();
+
+    i18nServer.changeLanguage(locale);
 
     function hydrateOnClient() {
-      res.send('<!doctype html>\n' + ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store} serverRequest={req}/>));
+      res.send('<!doctype html>\n' + ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} store={store} serverRequest={req} i18n={i18nClient}/>));
     }
 
     if (__DISABLE_SSR__) {
       hydrateOnClient();
       return;
     }
-    console.log('LOG PART 2');
-    console.log('-------------------------');
-    console.log('--------routes--------');
-    console.log(getRoutes(store, virtualHost.path));
-    console.log('--------location--------');
-    console.log(req.originalUrl);
-    console.log('-------------------------');
+
     match({
       history,
       routes: getRoutes(store, virtualHost.path),
@@ -127,10 +135,14 @@ virtualHosts.forEach(function(virtualHost) {
             client
           }
         }).then(() => {
+          console.log('je passe');
+          console.log(renderProps);
           const component = (
-            <Provider store={store} key="provider">
-              <ReduxAsyncConnect {...renderProps}/>
-            </Provider>
+            <I18nextProvider i18n={i18nServer}>
+              <Provider store={store} key="provider">
+                <ReduxAsyncConnect {...renderProps}/>
+              </Provider>
+            </I18nextProvider>
           );
 
           res.status(200);
@@ -139,7 +151,7 @@ virtualHosts.forEach(function(virtualHost) {
             userAgent: req.headers['user-agent']
           };
 
-          res.send('<!doctype html>\n' + ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} serverRequest={req} store={store}/>));
+          res.send('<!doctype html>\n' + ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} serverRequest={req} store={store} i18n={i18nClient}/>));
         });
       } else {
         res.status(404).send('Not found');

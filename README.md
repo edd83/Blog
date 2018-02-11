@@ -4,9 +4,13 @@ Version 1.0.0
 
 ---------------------
 
-Server from scratch, redux and react (In progress) for different projects.
+IS IS STILL NOT WORKING, JUST NEED TO FIX ISSUE ON SCROLL ON SERVERSIDE AND LOOK AROUND CONTAINER.
 
-Trying to add the best practice and best tools.
+Based on https://github.com/erikras/react-redux-universal-hot-example.
+Erikras tryed to add the best practice and best tools.
+I added vhosts, loadbalancing, intern traduction with i18n and fix different bug.
+Script are a bit broken, need to improve it.
+React is still in 15.6.1, i have to change it.
 
 ---------------------
 
@@ -20,17 +24,25 @@ Install dependencies :
 
 npm install
 
-Compile the project :
+Compile the project (production):
 
 npm run build
 
-Start the project :
+Start the project (production):
 
 npm start
 
+pm2 start ecosystem.js (for loadbalancing)
+
+Start the project, do not need compilation (development):
+
+npm run dev
+
 See the results :
 
-http://localhost:3000
+(dev) http://localhost:3000
+
+(prod) http://localhost:8080
 
 ---------------------
 

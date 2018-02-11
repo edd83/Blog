@@ -1,0 +1,7 @@
+{
+  "app_container": {
+    "modal_title": "Accès au compte",
+    "fb_google_co_title": "Connectez-vous plus rapidement",
+    "view_property": " {{nbView}} personnes consultent ce bien"
+  }
+}

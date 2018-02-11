@@ -1,0 +1,13 @@
+@import '../../theme/variables.scss';
+
+body {
+  min-width: 320px;
+  background-color: white;
+}
+
+.app {
+  background-color: #FFFFFF;
+  padding: 0;
+  margin: 0;
+  height: 400px;
+}

@@ -1,0 +1,9 @@
+.idea/
+static/folder_signature/
+node_modules/
+dist/
+*.iml
+webpack-assets.json
+webpack-stats.json
+npm-debug.log
+*.swp
