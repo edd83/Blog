@@ -28,9 +28,11 @@ Install dependencies :
 
 npm install
 
+
 Compile the project (production):
 
 npm run build
+
 
 Start the project (production):
 
@@ -38,9 +40,11 @@ npm start
 
 pm2 start ecosystem.js (for loadbalancing)
 
+
 Start the project, do not need compilation (development):
 
 npm run dev
+
 
 See the results :
 
