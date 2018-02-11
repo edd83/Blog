@@ -1,4 +1,4 @@
-# simple_app_express_react_redux
+# Complete app React Redux Express LoadBalancing Traduction Vhosts
 
 Version 1.0.0
 
