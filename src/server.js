@@ -37,17 +37,6 @@ app.use(favicon(path.join(__dirname, '..', 'static', 'test.ico')));
 app.use(Express.static(path.join(__dirname, '..', 'static')));
 app.use(i18nMiddleware.handle(i18n))
 
-// Proxy to API server
-app.use('/api', (req, res) => {
-  proxy.web(req, res, {target: targetUrl});
-});
-
-app.use('/ws', (req, res) => {
-  proxy.web(req, res, {
-    target: targetUrl + '/ws'
-  });
-});
-
 server.on('upgrade', (req, socket, head) => {
   proxy.ws(req, socket, head);
 });
@@ -72,11 +61,7 @@ proxy.on('error', (error, req, res) => {
 var virtualHosts = require('./vhosts.json');
 virtualHosts.forEach(function(virtualHost) {
   const app2 = new Express();
-//  app2.use(compression());
-// // app2.use(favicon(path.join(__dirname, virtualHost.path, '..', 'static', 'nestenn.ico')));
-//  app2.use(Express.static(path.join(__dirname, virtualHost.path, '..', 'static')));
-//
-//  app2.use(Express.static(path.join(__dirname, virtualHost.path)));
+  // app2.use(favicon(path.join(__dirname, virtualHost.path, '..', 'static', 'test.ico')));
   app2.get('/siteUrl', (req, res) => {
     res.json({siteUrl: virtualHost.path})
   });
@@ -93,6 +78,8 @@ virtualHosts.forEach(function(virtualHost) {
     const store = createStore(memoryHistory, client);
     const history = syncHistoryWithStore(memoryHistory, store);
     store.siteUrl = virtualHost.path;
+
+    // part for the traduction
     let locale;
     if (req.originalUrl.includes('/en/')) {
       locale = 'en';
@@ -104,7 +91,6 @@ virtualHosts.forEach(function(virtualHost) {
     const resources = i18n.getResourceBundle('fr', 'common');
     const i18nClient = {locale, resources, resources2};
     const i18nServer = i18n.cloneInstance();
-
     i18nServer.changeLanguage(locale);
 
     function hydrateOnClient() {
@@ -135,8 +121,6 @@ virtualHosts.forEach(function(virtualHost) {
             client
           }
         }).then(() => {
-          console.log('je passe');
-          console.log(renderProps);
           const component = (
             <I18nextProvider i18n={i18nServer}>
               <Provider store={store} key="provider">

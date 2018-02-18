@@ -6,11 +6,10 @@ import {
 } from 'containers';
 
 export default(store, path) => {
-  console.log('Passed into route');
   return (
-    <Route path="/" component={App} siteUrl={path}>
-      {/* Home (main) route */}
-      <Route path=":lang">
+    <Route path=":lang">
+      <Route path="/" component={App} siteUrl={path}>
+        {/* Home (main) route */}
         <IndexRoute component={Home} siteUrl={path}/>
 
         {/* Routes */}

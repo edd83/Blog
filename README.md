@@ -4,21 +4,19 @@ Version 1.2.0
 
 ---------------------
 
-IS IS STILL NOT WORKING, JUST NEED TO FIX ISSUE ON SCROLL ON SERVERSIDE AND LOOK AROUND CONTAINER.
-
 Based on https://github.com/erikras/react-redux-universal-hot-example.
 
 Erikras tryed to add the best practice and best tools.
 
 I added vhosts, loadbalancing, intern traduction with i18n and fix different bug.
 
-Script are a bit broken, need to improve it.
+Script are a bit broken in script_generate, need to improve it.
 
 React is still in 15.6.1, i have to change it.
 
 ---------------------
 
-Working on node 8.9.3 and npm 5.5.1.
+Working on node 8.9.3 and npm 5.6.0.
 
 To start using the project you have to install node and npm.
 

@@ -11,34 +11,28 @@ import {Provider} from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { ReduxAsyncConnect } from 'redux-async-connect';
-import { useScroll } from 'react-router-scroll';
 import getRoutes from './routes';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n-client';
 
 const client = new ApiClient();
-const _browserHistory = useScroll(() => browserHistory)();
 const dest = document.getElementById('content');
-const store = createStore(_browserHistory, client, window.__data);
-const history = syncHistoryWithStore(_browserHistory, store);
+const store = createStore(browserHistory, client, window.__data);
+const history = syncHistoryWithStore(browserHistory, store);
 
 function initSocket() {
+  // polling transport
+  // add transport: websocket to change it
   const socket = io('', {
-    path: '/ws',
-    transports: ['websocket'],
+    path: '/ws'
   });
-  socket.on('news', () => {
-    socket.emit('my other event', { my: 'data from client' });
-  });
-  socket.on('msg', (data) => {
-    console.log(data);
-  });
-
   return socket;
 }
 
+// initialise the socket
 global.socket = initSocket();
 
+// i18n used for the traduction
 i18n.changeLanguage(window.__i18n.locale);
 i18n.addResourceBundle('fr', 'common', window.__i18n.resources, true);
 i18n.addResourceBundle('en', 'common', window.__i18n.resources2, true);
@@ -50,10 +44,6 @@ const component = (
     {getRoutes(store)}
   </Router>
 );
-
-console.log('component');
-console.log(component);
-console.log('component');
 
 fetch('/siteUrl') // fetch from Express.js server
 .then(response => response.json())
@@ -76,19 +66,4 @@ if (process.env.NODE_ENV !== 'production') {
   if (!dest || !dest.firstChild || !dest.firstChild.attributes || !dest.firstChild.attributes['data-react-checksum']) {
     console.error('Server-side React render was discarded. Make sure that your initial render does not contain any client-side code.');
   }
-}
-
-if (__DEVTOOLS__ && !window.devToolsExtension) {
-  const DevTools = require('./containers/DevTools/DevTools');
-  ReactDOM.render(
-    <I18nextProvider i18n={i18n}>
-      <Provider store={store} key="provider">
-        <div>
-          {component}
-          <DevTools />
-        </div>
-      </Provider>
-    </I18nextProvider>,
-    dest
-  );
 }
