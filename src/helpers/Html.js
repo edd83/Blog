@@ -37,6 +37,7 @@ export default class Html extends Component {
           {head.link.toComponent()}
           {head.script.toComponent()}
           <link rel="stylesheet" type="text/css" href="/lib/afterChargingComponent.css"/>
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
           {Object.keys(assets.styles).map((style, key) => <link href={assets.styles[style]} key={key} media="screen, projection" rel="stylesheet" type="text/css" charSet="UTF-8"/>)}
           {Object.keys(assets.styles).length === 0
             ? <style dangerouslySetInnerHTML={{

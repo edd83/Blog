@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
+import {Header} from 'components';
 
 @translate(['common'])
 export default class App extends Component {
@@ -16,10 +17,12 @@ export default class App extends Component {
     const styles = require('./App.scss');
     return (
       <div className={styles.app}>
-      <span>Eddy Lardet dans App</span>
+      <Header />
+      <div className={styles.appContainer}>
         <div className={styles.appContent}>
           {this.props.children}
         </div>
+      </div>
       </div>
     );
   }

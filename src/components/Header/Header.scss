@@ -1,0 +1,61 @@
+.global_container {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 250px;
+  background-color: #4f4f4f;
+}
+
+.textMenuUl {
+  list-style-type: none;
+  padding: 0;
+  position: fixed;
+  z-index: 5000;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background-color: #424242;
+  box-shadow: 0px 0px 3px 1px #1c1c1c;
+}
+
+.textMenuLi {
+  font-size: 15px;
+  padding: 0;
+  padding: 0 20px;
+  display: inline-block;
+}
+
+.textMenuLi a, .textMenuLi a:visited, .textMenuLi a:active {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.antiMenu {
+  height: 50px;
+}
+
+.global_container h1 {
+  padding: 0;
+  margin: 0;
+}
+
+.global_container h1 {
+  font-weight: 400;
+  text-align: center;
+  margin-top: 45px;
+  font-size: 2em;
+  color: #fff;
+  padding-bottom: 30px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.29);
+}
+
+.global_container h4 {
+  margin-top: -25px;
+  text-align: center;
+  font-size: 1.2em;
+  line-height: 1.5;
+  font-weight: 300;
+  color: #fff;
+  margin-bottom: 110px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.29);
+}
