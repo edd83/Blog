@@ -25,7 +25,7 @@ export default class Home extends Component {
           <a href="https://plus.google.com/u/1/+EddyLardet" target="_blank"><i className={['fa', 'fa-google-plus', styles.iconSocial].join(' ')}></i></a>
           <a href="https://twitter.com/Eddyy83?lang=en" target="_blank"><i className={['fa', 'fa-twitter', styles.iconSocial].join(' ')}></i></a>
         </div>
-        <p>I am Eddy Lardet, 25 years old, passionned by computing since my 14 years.
+        <p>I am Eddy Lardet, 25 years old, passionned by computing since my 14 years old.
         I am a complete fan of the new technologies and the new methods in the web.
         I am curious, I love to know how works everything (business or technical part).</p>
         <p>I work as a full stack developer since 2011-2012, I did a lot of languages, but my speciality is the web.
