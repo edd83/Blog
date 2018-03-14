@@ -62,11 +62,11 @@
   text-decoration: none;
 }
 
-.buttonBottom:hover, .buttonBottom:visited, .buttonBottom:active {
+.buttonBottom:hover, .buttonBottom:visited, .buttonBottom:active, .buttonBottom:focus {
   color: #fff;
   outline: 0;
   background-color: #009cb0 !important;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .home p {

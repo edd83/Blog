@@ -32,7 +32,7 @@ export default class Home extends Component {
         SEO, front-end, back-end, leadership, social media, unit tests, Nginx configuration, traffic analysis... I love to know (and do) everything in the web.</p>
         <p>Evolution and innovation are very important for me.</p>
         <div className={styles.containerButton}>
-          <a className={styles.buttonBottom}>DOWNLOAD CV</a>
+          <a className={styles.buttonBottom} href="/London-CV-Eddy.pdf" download>DOWNLOAD CV</a>
           <a className={styles.buttonBottom}>CONTACT ME</a>
         </div>
       </div>
